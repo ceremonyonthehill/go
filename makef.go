@@ -5,18 +5,12 @@ import (
 )
 
 func main() {
+	pam := make(map[int]bool)
+	pam[0] = true
+	v, ok := pam[0]
+	if ok {
+		fmt.Println("Value:", v)
+	}
+	delete(pam, 0)
 
-	//slice to arr
-	s := []int{1, 2, 3, 4, 5}
-	var a [5]int
-	copy(a[:], s)
-
-	fmt.Println(a)
-
-	fmt.Println("////////////////////")
-	//arr to slice
-
-	var arr = [4]int{1, 2, 3, 4}
-	slice := arr[:]
-	fmt.Println(slice)
 }
