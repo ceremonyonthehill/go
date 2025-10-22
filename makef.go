@@ -1,46 +1,40 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"strings"
 )
 
+type Person struct {
+	Name string `json:"n,omitempty"`
+	Age  int    `json:"a,omitempty"`
+}
+type E struct {
+	Person
+	EmployeeId string
+}
+
 func main() {
+	p := E{Person: Person{Name: "Wanwan", Age: 10},
+		EmployeeId: "12345E"}
+	fmt.Println(p.Name)
+	fmt.Println(p.EmployeeId)
 
-	var qa [5]int = [5]int{10, 20, 30, 40, 50}
-
-	qs := qa[:]
-
-	var nq = make([]int, 0, 10)
-
-	nq = append(nq, qs...)
-
-	var fixedArray [5]int
-	copy(fixedArray[:], nq)
-
-	inventory := make(map[string]int)
-
-	itemNames := []string{"john", "paul", "george", "ringo", "billy"}
-	for i, beatles := range itemNames {
-		lowerName := strings.ToLower(beatles)
-		inventory[lowerName] = fixedArray[i]
+	jsonData, err := json.Marshal(p)
+	if err != nil {
+		fmt.Println("Error marshaling JSON:", err)
+		return
 	}
 
-	checkItems := []string{"john", "paul", "ringo"}
-	for _, item := range checkItems {
-		qty, ok := inventory[item]
-		if ok {
-			fmt.Printf("%s: %d units\n", item, qty)
-		} else {
-			fmt.Printf("%s: not found in inventory\n", item)
-		}
-	}
+	fmt.Println(string(jsonData))
 
-	fmt.Println("Capacity before append:", cap(nq))
-	for i := 0; i < 10; i++ {
-		nq = append(nq, 1)
-
+	var p2 Person
+	jsonStr := `{"n":"Marley","a":25}`
+	err = json.Unmarshal([]byte(jsonStr), &p2)
+	if err != nil {
+		fmt.Println("Error unmarshaling JSON:", err)
+		return
 	}
-	fmt.Println("Capacity after append:", cap(nq))
+	fmt.Printf("Unmarshaled struct %+v\n", p2)
 
 }
